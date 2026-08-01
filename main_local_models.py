@@ -1,15 +1,14 @@
-import os
-from dotenv import load_dotenv
-load_dotenv(override=True)
+#import os
+#from dotenv import load_dotenv
+#load_dotenv(override=True)
 
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
+#from langchain_openai import ChatOpenAI
 
-load_dotenv()
-
+from langchain_ollama import ChatOllama
 
 def main():
-    print("Hello from langchain-course, Sujit!")
+    print("Hello from langchain-course, Local Models!")
     # print(os.getenv("OPENAI_API_KEY"))
     information = """
     Andrew R. Jassy (born January 13, 1968)[5] is an American business executive who is the president and chief executive officer of Amazon since July 2021, succeeding founder Jeff Bezos, \
@@ -21,8 +20,17 @@ def main():
                 1. A short Summary of the information
                 2. Two interesting facts about the person mentioned in the information"""
     )
-    model_name = "gpt-4o-mini"  
-    model = ChatOpenAI(model=model_name, temperature=0)
+    print("--------------------------------")
+    print("***** Google Gemma3:270m *****")
+    model_name = "gemma3:270m"
+    model = ChatOllama(model=model_name, temperature=0)
+    chain = prompt | model
+    response = chain.invoke({"information": information})
+    print(response.content)
+    print("--------------------------------")
+    print("***** Qwen3.5:9b *****")
+    model_name = "qwen3.5:9b"
+    model = ChatOllama(model=model_name, temperature=0)
     chain = prompt | model
     response = chain.invoke({"information": information})
     print(response.content)
