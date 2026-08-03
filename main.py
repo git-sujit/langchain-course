@@ -1,5 +1,6 @@
-from dotenv import load_dotenv
 from typing import List
+
+from dotenv import load_dotenv
 
 load_dotenv(override=True)
 from langchain.agents import create_agent
@@ -8,7 +9,6 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_tavily import TavilySearch
-
 from pydantic import BaseModel, Field
 
 
@@ -33,6 +33,7 @@ def search_tool(query: str) -> str:
     print(f"Search results for {query} ")
     return tavily.search(query=query)
 
+
 tavily = TavilySearch()
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 # tools = [search_tool]
@@ -42,7 +43,7 @@ agent = create_agent(model=llm, tools=tools, response_format=AgentResponse)
 
 def main():
     print("Hello from langchain-course! Search Agent!")
-    query = "What is the capital of France?"
+    # query = "What is the capital of France?"
     query = "search for 3 job postings for an ai engineer using langchain in the bay area on linkedin and list their details?"
     result = agent.invoke({"messages": [HumanMessage(content=query)]})
     print(result)
